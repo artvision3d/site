@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artvision - Renderização Arquitetônica</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0.8rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .logo {
+            width: 35px;
+            height: 35px;
+            background: url('assets/WrYeB6cbXjUrDXI1u7aK6.png') center/contain no-repeat;
+        }
+
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #d4af37 0%, #f4e5b0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #d4af37;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #d4af37;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 60px;
+            padding: 6rem 5% 4rem;
+            text-align: center;
+            background: radial-gradient(circle at center, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #d4af37 0%, #f4e5b0 50%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: #c0c0c0;
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.8;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: linear-gradient(135deg, #d4af37 0%, #b8941e 100%);
+            color: #000;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(212, 175, 55, 0.5);
+        }
+
+        /* WhatsApp Button */
+        .whatsapp-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1.2rem 3rem;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+        }
+
+        .whatsapp-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 30px rgba(37, 211, 102, 0.6);
+        }
+
+        .whatsapp-icon {
+            width: 28px;
+            height: 28px;
+            fill: white;
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: 3rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .gallery h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #d4af37;
+        }
+
+        .project-grid {
+            display: grid;
+            gap: 4rem;
+        }
+
+        .project-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .project-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 10px 40px rgba(212, 175, 55, 0.2);
+        }
+
+        .project-code {
+            font-size: 1.1rem;
+            color: #d4af37;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .project-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .media-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            background: #000;
+        }
+
+        .media-container img,
+        .media-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .media-container:hover img,
+        .media-container:hover video {
+            transform: scale(1.05);
+        }
+
+        .media-label {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(212, 175, 55, 0.9);
+            color: #000;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            padding: 5rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .how-it-works h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #d4af37 0%, #f4e5b0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .how-it-works-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .step-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 2.5rem 2rem;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .step-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(212, 175, 55, 0.5);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.2);
+        }
+
+        .step-number {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #d4af37 0%, #b8941e 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #000;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .step-card h3 {
+            font-size: 1.4rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+            margin-top: 1.5rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .step-card p {
+            color: #c0c0c0;
+            font-size: 1rem;
+            line-height: 1.8;
+            text-align: center;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 4rem 5%;
+            max-width: 800px;
+            margin: 3rem auto;
+            text-align: center;
+        }
+
+        .contact-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #d4af37;
+        }
+
+        .contact-section p {
+            text-align: center;
+            color: #c0c0c0;
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.95);
+            padding: 3rem 5%;
+            text-align: center;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            margin-top: 4rem;
+        }
+
+        footer p {
+            color: #c0c0c0;
+            font-size: 1rem;
+        }
+
+        /* Floating WhatsApp Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 999;
+            text-decoration: none;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(37, 211, 102, 0.7);
+        }
+
+        .whatsapp-float svg {
+            width: 35px;
+            height: 35px;
+            fill: white;
+        }
+
+        .whatsapp-float::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #25D366;
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .project-content {
+                grid-template-columns: 1fr;
+            }
+
+            .how-it-works-grid {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+
+            header {
+                padding: 0.6rem 3%;
+            }
+
+            .logo {
+                width: 30px;
+                height: 30px;
+            }
+
+            .brand-name {
+                font-size: 1.1rem;
+            }
+
+            nav ul {
+                gap: 1.2rem;
+            }
+
+            nav a {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            header {
+                padding: 0.5rem 3%;
+            }
+
+            .logo {
+                width: 25px;
+                height: 25px;
+            }
+
+            .brand-name {
+                font-size: 1rem;
+            }
+
+            nav ul {
+                gap: 0.8rem;
+            }
+
+            nav a {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo-container">
+                <div class="logo"></div>
+                <div class="brand-name">Artvision</div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Início</a></li>
+                    <li><a href="#portfolio">Portfólio</a></li>
+                    <li><a href="#how-it-works">Como Funciona</a></li>
+                    <li><a href="#contact">Contato</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <h1>Renderização Arquitetônica de Alta Qualidade</h1>
+        <p>Transformamos as imagens do seu projeto em vídeos imersivos e realistas de alto impacto visual.</p>
+        <a href="#contact" class="cta-button">Solicite um Orçamento</a>
+    </section>
+
+
+
+    <!-- Gallery Section -->
+    <section class="gallery" id="portfolio">
+        <h2>Nosso Portfólio</h2>
+        <div class="project-grid" id="projectGrid">
+            <!-- Project items will be dynamically added here -->
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <h2>Como Funciona Nosso Trabalho</h2>
+        <div class="how-it-works-grid">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Envio das Imagens 3D</h3>
+                <p>Você nos envia as imagens 3D do seu projeto, que servirão de base para a criação do vídeo renderizado.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>Criação do Vídeo Imersivo</h3>
+                <p>Transformamos suas imagens em vídeos renderizados imersivos, com texturas realistas, iluminação detalhada e movimentos cinematográficos.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Entrega do Resultado Final</h3>
+                <p>Você recebe a renderização em formato de vídeo de alta qualidade, trazendo seu projeto à vida e criando uma experiência visual impactante e emocional para seus clientes.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <h2>Entre em Contato</h2>
+        <p>Transforme as imagens dos seus projetos arquitetônicos em vídeos imersivos que emocionam e vendem. Fale conosco pelo WhatsApp!</p>
+        <a href="https://wa.me/5534991933422" target="_blank" class="whatsapp-button">
+            <svg class="whatsapp-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+            </svg>
+            Fale Conosco no WhatsApp
+        </a>
+    </section>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/5534991933422" target="_blank" class="whatsapp-float" aria-label="Fale conosco no WhatsApp">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+        </svg>
+    </a>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Artvision - Renderização Arquitetônica. Todos os direitos reservados.</p>
+    </footer>
+
+    <script type="module">
+        // Project descriptions
+        const projectDescriptions = {
+            'V01': 'Residência de alto padrão',
+            'V03': 'Casa com área de lazer e piscina',
+            'V04': 'Residência contemporânea minimalista',
+            'V05': 'Casa luxuosa com múltiplas piscinas e jardim tropical',
+            'V06': 'Residência moderna com pedra vulcânica',
+            'V08': 'Residência de luxo com mármore preto',
+            'V09': 'Casa térrea moderna com garagem aberta',
+            'V10': 'Cozinha gourmet moderna',
+            'V11': 'Casa térrea com telhado colonial',
+            'V12': 'Cozinha de luxo com ilha de madeira',
+            'V13': 'Casa moderna de dois pavimentos',
+            'V14': 'Quarto de luxo',
+            'V15': 'Edifício residencial de 5 pavimentos',
+            'V16': 'Sala de estar moderna com painel ripado',
+            'V17': 'Vista aérea de residência moderna com rooftop e amplo jardim'
+        };
+
+        // Sample project data - Replace with your actual asset IDs
+        const projects = [
+            {
+                code: 'V01',
+                type: 'residential',
+                baseImage: 'assets/U5vgMVggqnyD9Dd-cccev.jpeg',
+                videoSrc: 'https://www.youtube.com/embed/DwFPp8_r0Lg',
+                isYouTube: true
+            },
+            {
+                code: 'V03',
+                type: 'residential',
+                baseImage: 'assets/tNBo2hUFH5PXrzKo2KZv8.jpeg',
+                videoSrc: 'https://www.youtube.com/embed/DFLAPkytu1o',
+                isYouTube: true
+            },
+            {
+                code: 'V04',
+                type: 'residential',
+                baseImage: 'assets/jxinzWazwQQzLAY7awp5W.jpeg',
+                videoSrc: 'https://www.youtube.com/embed/gnqvNxMoePI',
+                isYouTube: true
+            },
+            {
+                code: 'V05',
+                type: 'residential',
+                baseImage: 'assets/8IakRB9roffgHXmAiNbrl.jpeg',
+                videoSrc: 'https://www.youtube.com/embed/VpRPwhZdnTk',
+                isYouTube: true
+            },
+            {
+                code: 'V06',
+                type: 'residential',
+                baseImage: 'assets/AISEw68iYg2ZlsbLID-RR.jpeg',
+                videoSrc: 'https://www.youtube.com/embed/mxX9NPEldwk',
+                isYouTube: true
+            },
+            {
+                code: 'V08',
+                type: 'residential',
+                baseImage: 'assets/cFt3PLhW1JRdoEiC-uXjH.jpeg',
+                videoSrc: 'https://www.youtube.com/embed/E1wPD-WWycM',
+                isYouTube: true
+            },
+            {
+                code: 'V09',
+                type: 'residential',
+                baseImage: 'assets/CzLQsvl3Jcy40EVxx8tSj.jpeg',
+                videoSrc: 'https://www.youtube.com/embed/A8bf9aGnAnc',
+                isYouTube: true
+            },
+            {
+                code: 'V10',
+                type: 'residential',
+                baseImage: 'assets/TP9B6YfK9dy7kh0BVKUYz.png',
+                videoSrc: 'https://www.youtube.com/embed/IaR9TqnFzIQ',
+                isYouTube: true
+            },
+            {
+                code: 'V11',
+                type: 'residential',
+                baseImage: 'assets/skDxdLwOWB_5oA2Jhd-v-.png',
+                videoSrc: 'https://www.youtube.com/embed/PUKXbB47kfU',
+                isYouTube: true
+            },
+            {
+                code: 'V12',
+                type: 'residential',
+                baseImage: 'assets/pRLusF_XfTPuejWpUEkiP.png',
+                videoSrc: 'https://www.youtube.com/embed/-Fjc10II_XQ',
+                isYouTube: true
+            },
+            {
+                code: 'V13',
+                type: 'residential',
+                baseImage: 'assets/mAmvSNmMATRJ7qUvcLv1f.jpeg',
+                videoSrc: 'https://www.youtube.com/embed/ECeWhBUvTc8',
+                isYouTube: true
+            },
+            {
+                code: 'V14',
+                type: 'residential',
+                baseImage: 'assets/L7Vn7JWT8YYZMgTryy_Ue.png',
+                videoSrc: 'https://www.youtube.com/embed/2rUILDePK-A',
+                isYouTube: true
+            },
+            {
+                code: 'V15',
+                type: 'residential',
+                baseImage: 'assets/7crdmVTv8xI-Ds4sX8qzf.png',
+                videoSrc: 'https://www.youtube.com/embed/CVnWJ17uk-M',
+                isYouTube: true
+            },
+            {
+                code: 'V16',
+                type: 'residential',
+                baseImage: 'assets/JTvOf5y8i3E-1RD0qUEQD.png',
+                videoSrc: 'https://www.youtube.com/embed/PC_jyxzK8lI',
+                isYouTube: true
+            },
+            {
+                code: 'V17',
+                type: 'residential',
+                baseImage: 'assets/_fGaZe5CtR5SIKpRzCFH0.jpeg',
+                videoSrc: 'https://www.youtube.com/embed/tf08mk_BZMY',
+                isYouTube: true
+            }
+        ];
+
+        function renderProjects(filter = 'all') {
+            const grid = document.getElementById('projectGrid');
+            grid.innerHTML = '';
+
+            const filteredProjects = filter === 'all' 
+                ? projects 
+                : projects.filter(p => p.type === filter);
+
+            filteredProjects.forEach(project => {
+                const projectItem = document.createElement('div');
+                projectItem.className = 'project-item';
+                
+                const videoContent = project.isYouTube 
+                    ? `<iframe src="${project.videoSrc}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%; height: 100%; min-height: 400px; border-radius: 10px;"></iframe>`
+                    : `<img src="${project.videoSrc}" alt="Vídeo ${project.code}">`;
+                
+                const description = projectDescriptions[project.code] || '';
+                projectItem.innerHTML = `
+                    <div class="project-code">Projeto ${project.code} - ${description}</div>
+                    <div class="project-content">
+                        <div class="media-container">
+                            <div class="media-label">Imagem Base</div>
+                            <img src="${project.baseImage}" alt="Imagem Base ${project.code}">
+                        </div>
+                        <div class="media-container">
+                            <div class="media-label">Vídeo Renderizado</div>
+                            ${videoContent}
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(projectItem);
+            });
+        }
+
+        // Filter functionality
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                const filter = e.target.dataset.filter;
+                renderProjects(filter);
+            });
+        });
+
+        // Form submission
+        window.handleSubmit = (e) => {
+            e.preventDefault();
+            alert('Mensagem enviada com sucesso! Entraremos em contato em breve.');
+            e.target.reset();
+        };
+
+        // Initial render
+        renderProjects();
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
